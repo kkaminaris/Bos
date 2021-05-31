@@ -1,7 +1,7 @@
 package sample;
 
 public class Card{
-    private String name;
+    private String egw;
     private String cvv;
     private String exp_date;
     private String number;
