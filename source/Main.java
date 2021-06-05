@@ -206,6 +206,214 @@ public class Main extends Application
          window.show();
      }
 
+     public void editstock(int x){
+         VBox mypane = new VBox();
+         mypane.setPadding(new Insets(10));
+         mypane.setSpacing(8);
+         mypane.setAlignment(Pos.CENTER);
+         ScrollPane scrollPane = new ScrollPane(mypane);
+         scrollPane.setFitToHeight(true);
+         BorderPane miniborder = new BorderPane(scrollPane);
+         BorderPane border = new BorderPane();
+         Text title = new Text("CATEGORIES");
+         title.setFont(Font.font("Arial", FontWeight.BOLD, 14));
+         mypane.getChildren().add(title);
+         Button[] array = new Button[stores.get(x).getcategories().size()];
+         if(stores.get(x).getcategories().size()==0){mypane.getChildren().add(new Label("NO CATEGORIES ADDED"));}
+         else{
+             for (int i = 0; i < stores.get(x).getcategories().size(); i++) {
+                 array[i] = new Button(stores.get(x).getcategories().get(i));
+                 mypane.getChildren().add(array[i]);
+             }
+         }
+         for (int i = 0; i < stores.get(x).getcategories().size(); i++) {
+             int finalI = i;
+             array[i].setOnAction(e -> editcategory(x, finalI));
+         }
+         Button aButton = new Button("ADD CATEGORY");
+         mypane.getChildren().add(aButton);
+         GridPane.setHalignment(aButton, HPos.LEFT);
+         aButton.setOnAction(e -> addcategory(x));
+
+         VBox mypane5 = new VBox();
+         mypane5.setPadding(new Insets(10));
+         mypane5.setSpacing(8);
+         mypane5.setAlignment(Pos.CENTER);
+         Text title4 = new Text("OFFERS");
+         title4.setFont(Font.font("Arial", FontWeight.BOLD, 14));
+         mypane5.getChildren().add(title4);
+         Button[] array3 = new Button[stores.get(x).getoffers().size()];
+         if(stores.get(x).getoffers().size()==0){mypane5.getChildren().add(new Label("NO OFFERS ADDED"));}
+         else{
+             for (int i = 0; i < stores.get(x).getoffers().size(); i++) {
+                 array3[i] = new Button(stores.get(x).getoffers().get(i).getoffername());
+                 mypane5.getChildren().add(array3[i]);
+             }
+         }
+         for (int i = 0; i < stores.get(x).getoffers().size(); i++) {
+             int finalI = i;
+             array3[i].setOnAction(e ->editoffer(x, finalI));
+         }
+         Button oButton = new Button("ADD OFFER");
+         mypane5.getChildren().add(oButton);
+         GridPane.setHalignment(oButton, HPos.LEFT);
+         oButton.setOnAction(e -> {
+             Offer temp = new Offer();
+             addoffer(x,temp,-1);
+         });
+
+
+         VBox mypane2 = new VBox();
+         mypane2.setPadding(new Insets(10));
+         mypane2.setSpacing(8);
+         mypane2.setAlignment(Pos.CENTER);
+         Text title2 = new Text("PRODUCTS");
+         title2.setFont(Font.font("Arial", FontWeight.BOLD, 14));
+         mypane2.getChildren().add(title2);
+         Button[] array2 = new Button[stores.get(x).getproducts().size()];
+         if(stores.get(x).getproducts().size()==0){mypane2.getChildren().add(new Label("NO PRODUCTS ADDED"));}
+         else{
+             for (int i = 0; i < stores.get(x).getproducts().size(); i++) {
+                 array2[i] = new Button(stores.get(x).getproducts().get(i).getname());
+                 mypane2.getChildren().add(array2[i]);
+             }
+             for (int i = 0; i < stores.get(x).getproducts().size(); i++) {
+                 int finalI = i;
+                 array2[i].setOnAction(e -> editproduct(x, finalI));
+             }
+         }
+         Button aButton2 = new Button("ADD PRODUCT");
+         mypane2.getChildren().add(aButton2);
+         GridPane.setHalignment(aButton2, HPos.CENTER);
+         aButton2.setOnAction(e -> addproduct(x));
+         VBox mypane4 = new VBox();
+         mypane4.setPadding(new Insets(10));
+         mypane4.setSpacing(8);
+         mypane4.setAlignment(Pos.BOTTOM_RIGHT);
+         Button aButton3 = new Button("BACK");
+         mypane4.getChildren().add(aButton3);
+         aButton3.setOnAction(e -> arxikhselidastore(x));
+
+         miniborder.setRight(mypane5);
+         miniborder.setLeft(mypane);
+         miniborder.setCenter(mypane2);
+         border.setCenter(miniborder);
+         border.setRight(mypane4);
+         Text title3 = new Text("BOS");
+         title3.setFill(Color.GREEN);
+         title3.setFont(Font.font ("Verdana", 20));
+         VBox mypane3 = new VBox();
+         mypane3.setAlignment(Pos.CENTER);
+         mypane3.getChildren().add(title3);
+         border.setTop(mypane3);
+         window.setScene(new Scene(border, 800, 700));
+         window.show();
+     }
+
+     public void editstock(int x){
+         VBox mypane = new VBox();
+         mypane.setPadding(new Insets(10));
+         mypane.setSpacing(8);
+         mypane.setAlignment(Pos.CENTER);
+         ScrollPane scrollPane = new ScrollPane(mypane);
+         scrollPane.setFitToHeight(true);
+         BorderPane miniborder = new BorderPane(scrollPane);
+         BorderPane border = new BorderPane();
+         Text title = new Text("CATEGORIES");
+         title.setFont(Font.font("Arial", FontWeight.BOLD, 14));
+         mypane.getChildren().add(title);
+         Button[] array = new Button[stores.get(x).getcategories().size()];
+         if(stores.get(x).getcategories().size()==0){mypane.getChildren().add(new Label("NO CATEGORIES ADDED"));}
+         else{
+             for (int i = 0; i < stores.get(x).getcategories().size(); i++) {
+                 array[i] = new Button(stores.get(x).getcategories().get(i));
+                 mypane.getChildren().add(array[i]);
+             }
+         }
+         for (int i = 0; i < stores.get(x).getcategories().size(); i++) {
+             int finalI = i;
+             array[i].setOnAction(e -> editcategory(x, finalI));
+         }
+         Button aButton = new Button("ADD CATEGORY");
+         mypane.getChildren().add(aButton);
+         GridPane.setHalignment(aButton, HPos.LEFT);
+         aButton.setOnAction(e -> addcategory(x));
+
+         VBox mypane5 = new VBox();
+         mypane5.setPadding(new Insets(10));
+         mypane5.setSpacing(8);
+         mypane5.setAlignment(Pos.CENTER);
+         Text title4 = new Text("OFFERS");
+         title4.setFont(Font.font("Arial", FontWeight.BOLD, 14));
+         mypane5.getChildren().add(title4);
+         Button[] array3 = new Button[stores.get(x).getoffers().size()];
+         if(stores.get(x).getoffers().size()==0){mypane5.getChildren().add(new Label("NO OFFERS ADDED"));}
+         else{
+             for (int i = 0; i < stores.get(x).getoffers().size(); i++) {
+                 array3[i] = new Button(stores.get(x).getoffers().get(i).getoffername());
+                 mypane5.getChildren().add(array3[i]);
+             }
+         }
+         for (int i = 0; i < stores.get(x).getoffers().size(); i++) {
+             int finalI = i;
+             array3[i].setOnAction(e ->editoffer(x, finalI));
+         }
+         Button oButton = new Button("ADD OFFER");
+         mypane5.getChildren().add(oButton);
+         GridPane.setHalignment(oButton, HPos.LEFT);
+         oButton.setOnAction(e -> {
+             Offer temp = new Offer();
+             addoffer(x,temp,-1);
+         });
+
+
+         VBox mypane2 = new VBox();
+         mypane2.setPadding(new Insets(10));
+         mypane2.setSpacing(8);
+         mypane2.setAlignment(Pos.CENTER);
+         Text title2 = new Text("PRODUCTS");
+         title2.setFont(Font.font("Arial", FontWeight.BOLD, 14));
+         mypane2.getChildren().add(title2);
+         Button[] array2 = new Button[stores.get(x).getproducts().size()];
+         if(stores.get(x).getproducts().size()==0){mypane2.getChildren().add(new Label("NO PRODUCTS ADDED"));}
+         else{
+             for (int i = 0; i < stores.get(x).getproducts().size(); i++) {
+                 array2[i] = new Button(stores.get(x).getproducts().get(i).getname());
+                 mypane2.getChildren().add(array2[i]);
+             }
+             for (int i = 0; i < stores.get(x).getproducts().size(); i++) {
+                 int finalI = i;
+                 array2[i].setOnAction(e -> editproduct(x, finalI));
+             }
+         }
+         Button aButton2 = new Button("ADD PRODUCT");
+         mypane2.getChildren().add(aButton2);
+         GridPane.setHalignment(aButton2, HPos.CENTER);
+         aButton2.setOnAction(e -> addproduct(x));
+         VBox mypane4 = new VBox();
+         mypane4.setPadding(new Insets(10));
+         mypane4.setSpacing(8);
+         mypane4.setAlignment(Pos.BOTTOM_RIGHT);
+         Button aButton3 = new Button("BACK");
+         mypane4.getChildren().add(aButton3);
+         aButton3.setOnAction(e -> arxikhselidastore(x));
+
+         miniborder.setRight(mypane5);
+         miniborder.setLeft(mypane);
+         miniborder.setCenter(mypane2);
+         border.setCenter(miniborder);
+         border.setRight(mypane4);
+         Text title3 = new Text("BOS");
+         title3.setFill(Color.GREEN);
+         title3.setFont(Font.font ("Verdana", 20));
+         VBox mypane3 = new VBox();
+         mypane3.setAlignment(Pos.CENTER);
+         mypane3.getChildren().add(title3);
+         border.setTop(mypane3);
+         window.setScene(new Scene(border, 800, 700));
+         window.show();
+     }
+
 
     public static void main(String[] args)
        {
