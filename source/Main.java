@@ -414,6 +414,118 @@ public class Main extends Application
          window.show();
      }
 
+    public void anazhthshkatasthmatos(int y,int mod,String b){ //opou y thesh tou pelath sto arraylist, mod=mode opou -1 den exoume filtro kathgorias alliws h kathgoria -2 search bar
+         int mode;
+         mode=mod;
+         ArrayList<Store> storestoshow = new ArrayList<>();
+         GridPane mypane = new GridPane();
+         mypane.setPadding(new Insets(15));
+         mypane.setHgap(5);
+         mypane.setVgap(5);
+         mypane.setAlignment(Pos.TOP_RIGHT);
+         BorderPane mypane2= new BorderPane();
+         MenuItem userEditButton = new MenuItem("edit account");
+         MenuItem logoutButton = new MenuItem("log out");
+         MenuItem orderHIstoryButton = new MenuItem("order history");
+         MenuButton menuButton = new MenuButton(customers.get(y).getname(), null, userEditButton, orderHIstoryButton ,logoutButton);
+         mypane.add(menuButton, 1, 1);
+         userEditButton.setOnAction(e -> editcustomer(y));
+         logoutButton.setOnAction(e -> {
+             ArrayList<Product> productsincart2= customers.get(y).getkalathi().getproductsincart();
+             productsincart2.clear();
+             customers.get(y).getkalathi().setproductsincart(productsincart2);
+             ArrayList<Integer> clearlists = new ArrayList<>();
+             ArrayList<Offer> clearoffers = new ArrayList<>();
+             customers.get(y).getkalathi().setquantity(clearlists);
+             customers.get(y).getkalathi().setprices(clearlists);
+             customers.get(y).getkalathi().setoffersincart(clearoffers);
+             customers.get(y).getkalathi().setofferquantity(clearlists);
+             customers.get(y).getkalathi().setofferprices(clearlists);
+             customers.get(y).getkalathi().setkostos(0);
+             startapp();
+         });
+         VBox mypane5 = new VBox();
+         mypane5.setPadding(new Insets(10));
+         mypane5.setSpacing(8);
+         mypane5.setAlignment(Pos.CENTER);
+         TextField nametf = new TextField();
+         mypane5.getChildren().add(nametf);
+         Button searchButton = new Button("search");
+         searchButton.setOnAction(e -> anazhthshkatasthmatos(y,-2,nametf.getText()));
+         mypane5.getChildren().add(searchButton);
+         VBox mypane3 = new VBox();
+         mypane3.setPadding(new Insets(10));
+         mypane3.setSpacing(8);
+         mypane3.setAlignment(Pos.CENTER);
+         Text title2 = new Text("STORES");
+         title2.setFont(Font.font("Arial", FontWeight.BOLD, 14));
+         mypane3.getChildren().add(title2);
+         VBox mypane4 = new VBox();
+         mypane4.setPadding(new Insets(10));
+         mypane4.setSpacing(8);
+         mypane4.setAlignment(Pos.CENTER);
+         Text title3 = new Text("CATEGORIES");
+         title3.setFont(Font.font("Arial", FontWeight.BOLD, 14));
+         mypane4.getChildren().add(title3);
+         ArrayList<String> cat = new ArrayList<>();
+         for (int i = 0; i <stores.size() ; i++) {
+             cat.addAll(stores.get(i).getcategories());
+         }
+         cat.add("all categories");
+         Set<String> set = new LinkedHashSet<>(cat);
+         cat.clear();
+         cat.addAll(set);
+         Button[] categoriesArrayButton = new Button[cat.size()];
+         if(cat.size()==0){mypane4.getChildren().add(new Label("NO CATEGORIES"));}
+         else{
+             for (int j = 0; j < cat.size(); j++) {
+                 categoriesArrayButton[j] = new Button(cat.get(j));
+                 mypane4.getChildren().add(categoriesArrayButton[j]);
+             }
+         }
+         for (int i = 0; i < cat.size()-1; i++) {
+             int finalI = i;
+             categoriesArrayButton[i].setOnAction(e ->anazhthshkatasthmatos(y,finalI,null));
+         }
+         categoriesArrayButton[cat.size()-1].setOnAction(e ->anazhthshkatasthmatos(y,-1,null));
+         if(mode==-1)
+             storestoshow=stores;
+         else if(mod==-2)
+         {
+             for (int i = 0; i <stores.size() ; i++) {
+                 if(stores.get(i).getname().equals(b))
+                     storestoshow.add(stores.get(i));
+             }
+         }
+         else{
+             for (int i = 0; i <stores.size() ; i++) {
+                 for (int j = 0; j <stores.get(i).getcategories().size() ; j++) {
+                     if(cat.get(mod).equals(stores.get(i).getcategories().get(j))){
+                         storestoshow.add(stores.get(i));
+                         break;
+                     }
+                 }
+             }
+         }
+         Button[] storesButtonArray = new Button[storestoshow.size()];
+         if(storestoshow.size()==0){mypane3.getChildren().add(new Label("NO STORES AVAILABLE"));}
+         else{
+             for (int j = 0; j < storestoshow.size(); j++) {
+                 storesButtonArray[j] = new Button(storestoshow.get(j).getname());
+                 mypane3.getChildren().add(storesButtonArray[j]);
+             }
+         }
+         for (int i = 0; i < storestoshow.size(); i++) {
+             int finalI = i;
+             storesButtonArray[i].setOnAction(e -> sellproducts(finalI,y,-1,0));
+         }
+         mypane2.setRight(mypane5);
+         mypane2.setLeft(mypane4);
+         mypane2.setCenter(mypane3);
+         mypane2.setTop(mypane);
+         window.setScene(new Scene(mypane2, 800, 700));
+         window.show();
+     }
 
     public static void main(String[] args)
        {
