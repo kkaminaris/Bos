@@ -1127,6 +1127,53 @@ public class Main extends Application
          window.show();
      }
 
+     public void plhrwmh(int x,int y,Order temp){
+         BorderPane border = new BorderPane();
+         VBox mypane = new VBox();
+         mypane.setPadding(new Insets(10));
+         mypane.setSpacing(8);
+         mypane.setAlignment(Pos.CENTER);
+         ScrollPane scrollPane = new ScrollPane(mypane);
+         scrollPane.setFitToHeight(true);
+         Text title = new Text("CARDS");
+         title.setFont(Font.font("Arial", FontWeight.BOLD, 14));
+         mypane.getChildren().add(title);
+         Button[] cardButtonArray = new Button[customers.get(y).getcards().size()];
+         if(customers.get(y).getcards().size()==0){mypane.getChildren().add(new Label("NO CARDS ADDED"));}
+         else{
+             for (int i = 0; i < customers.get(y).getcards().size(); i++) {
+                 cardButtonArray[i] = new Button(customers.get(y).getcards().get(i).getnumber());
+                 mypane.getChildren().add(cardButtonArray[i]);
+             }
+         }
+         for (int i = 0; i < customers.get(y).getcards().size(); i++) {
+             int finalI = i;
+             cardButtonArray[i].setOnAction(e -> {
+                 temp.settropos_plhrwmhs(2,customers.get(y).getcards().get(finalI));
+                 completeorder(x,y,2);
+             });
+         }
+         Button addButton = new Button("ADD CARD");
+         mypane.getChildren().add(addButton);
+         GridPane.setHalignment(addButton, HPos.LEFT);
+         addButton.setOnAction(e -> prosthikhkartassthnlista(x,y,temp));
+         VBox mypane2 = new VBox();
+         mypane2.setPadding(new Insets(10));
+         mypane2.setSpacing(8);
+         mypane2.setAlignment(Pos.BOTTOM_RIGHT);
+         Button backButton = new Button("BACK");
+         mypane2.getChildren().add(backButton);
+         backButton.setOnAction(e -> completeorder(x,y,0));
+         Button cashButton = new Button("CASH");
+         mypane.getChildren().add(cashButton);
+         GridPane.setHalignment(cashButton, HPos.LEFT);
+         cashButton.setOnAction(e -> { temp.settropos_plhrwmhs(1);completeorder(x,y,1);});
+         border.setCenter(mypane);
+         border.setBottom(mypane2);
+         window.setScene(new Scene(border, 800, 700));
+         window.show();
+     }
+
     public static void main(String[] args)
        {
          launch(args);
