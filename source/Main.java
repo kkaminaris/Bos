@@ -791,6 +791,128 @@ public class Main extends Application
          window.show();
      }
 
+     public void completeorder(int x,int y,int s){//x=store y=customer s=status
+         Order temp= new Order();
+         temp.settropos_plhrwmhs(s);//0=den exei dialleksei 1=metrhta 2=card
+         BorderPane border = new BorderPane();
+         GridPane mypane = new GridPane();
+         mypane.setPadding(new Insets(10));
+         mypane.setHgap(5);
+         mypane.setVgap(3);
+         mypane.setAlignment(Pos.CENTER);
+         int i;
+         for ( i = 0; i < customers.get(y).getkalathi().getproductsincart().size(); i++) {
+             Text text1 = new Text(customers.get(y).getkalathi().getquantity().get(i)+"x   "+customers.get(y).getkalathi().getproductsincart().get(i).getname()+"    "+customers.get(y).getkalathi().getprices().get(i)*customers.get(y).getkalathi().getquantity().get(i)+"€");
+             mypane.add(text1,1, i);
+         }
+         Button editorder = new Button("EDIT ORDER");
+         mypane.add(editorder,1,i);
+         editorder.setOnAction(e -> editcart(x,y));
+         VBox mypane2 = new VBox();
+         mypane2.setPadding(new Insets(10));
+         mypane2.setSpacing(8);
+         mypane2.setAlignment(Pos.CENTER);
+         Button buttonplhrwmhs = new Button("CHOOSE PAYMENT METHOD");
+         mypane2.getChildren().add(buttonplhrwmhs);
+         buttonplhrwmhs.setOnAction(e -> plhrwmh(x,y,temp));
+         TextField sxoliotf = new TextField();
+         sxoliotf.setPromptText("add comments for the store...");
+         temp.setsxolia(sxoliotf.getText());
+         Text title3 = new Text("BOS");
+         title3.setFill(Color.GREEN);
+         title3.setFont(Font.font ("Verdana", 20));
+         Text title4 = new Text("TOTAL COST:"+customers.get(y).getkalathi().getkostos());
+         VBox mypane3 = new VBox();
+         mypane3.setPadding(new Insets(20));
+         mypane3.setSpacing(18);
+         mypane3.setAlignment(Pos.CENTER);
+         mypane3.getChildren().add(title4);
+         Button buttonapostolh = new Button("SEND ORDER");
+         mypane3.getChildren().add(buttonapostolh);
+         buttonapostolh.setOnAction(e -> {
+             if(temp.gettropos_plhrwmhs()==2){
+                 Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+                 alert.setTitle("BOS");
+                 alert.setHeaderText(null);
+                 alert.setContentText("το σύστημα επικοινωνεί με την τράπεζα και αυτη:");
+                 ButtonType buttona = new ButtonType("πραγματοποιεί την συναλλαγή");
+                 ButtonType buttonb= new ButtonType("δεν πραγματοποιεί την συναλλαγή");
+                 alert.getButtonTypes().setAll(buttona, buttonb);
+                 Optional<ButtonType> result = alert.showAndWait();
+                 if (result.get() == buttona){
+                     Alert alert2 = new Alert(Alert.AlertType.INFORMATION);
+                     alert2.setTitle("BOS");
+                     alert2.setHeaderText(null);
+                     alert2.setContentText("YOUR ORDER HAS BEEN SAVED!");
+                     alert2.showAndWait();
+                     temp.setstatus(0);
+                     temp.setkatasthma(x);
+                     temp.setpelaths(y);
+                     ArrayList<Product> productsincart2= customers.get(y).getkalathi().getproductsincart();
+                     productsincart2.clear();
+                     customers.get(y).getkalathi().setproductsincart(productsincart2);
+                     ArrayList<Integer> clearlists = new ArrayList<>();
+                     ArrayList<Offer> clearoffers = new ArrayList<>();
+                     customers.get(y).getkalathi().setquantity(clearlists);
+                     customers.get(y).getkalathi().setprices(clearlists);
+                     customers.get(y).getkalathi().setoffersincart(clearoffers);
+                     customers.get(y).getkalathi().setofferquantity(clearlists);
+                     customers.get(y).getkalathi().setofferprices(clearlists);
+                     customers.get(y).getkalathi().setkostos(0);
+                     temp.settropos_plhrwmhs(0);
+                     anazhthshkatasthmatos(y,-1,null); }
+                 else {
+                     Alert alert3 = new Alert(Alert.AlertType.ERROR);
+                     alert3.setTitle("BOS");
+                     alert3.setHeaderText(null);
+                     alert3.setContentText("THE TRANSACTION FAILED");
+                     alert3.showAndWait();
+                     completeorder(x,y,2);
+                 }
+             }
+             else if(temp.gettropos_plhrwmhs()==1){
+                 Alert alert2 = new Alert(Alert.AlertType.INFORMATION);
+                 alert2.setTitle("BOS");
+                 alert2.setHeaderText(null);
+                 alert2.setContentText("YOUR ORDER HAS BEEN SAVED!");
+                 alert2.showAndWait();
+                 temp.setstatus(0);
+                 temp.setkatasthma(x);
+                 temp.setpelaths(y);
+                 ArrayList<Product> productsincart2= customers.get(y).getkalathi().getproductsincart();
+                 productsincart2.clear();
+                 customers.get(y).getkalathi().setproductsincart(productsincart2);
+                 ArrayList<Integer> clearlists = new ArrayList<>();
+                 ArrayList<Offer> clearoffers = new ArrayList<>();
+                 customers.get(y).getkalathi().setquantity(clearlists);
+                 customers.get(y).getkalathi().setprices(clearlists);
+                 customers.get(y).getkalathi().setoffersincart(clearoffers);
+                 customers.get(y).getkalathi().setofferquantity(clearlists);
+                 customers.get(y).getkalathi().setofferprices(clearlists);
+                 customers.get(y).getkalathi().setkostos(0);
+                 temp.settropos_plhrwmhs(0);
+                 anazhthshkatasthmatos(y,-1,null);
+             }
+             else{
+                 Alert alert = new Alert(Alert.AlertType.WARNING);
+                 alert.setTitle("BOS");
+                 alert.setHeaderText(null);
+                 alert.setContentText("YOU NEED TO CHOOSE PAYMENT METHOD!");
+                 alert.showAndWait();
+             }
+         });
+         Button buttonback= new Button("BACK");
+         mypane3.getChildren().add(buttonback);
+         buttonback.setOnAction(e ->editcart(x,y));
+         border.setRight(mypane3);
+         border.setCenter(mypane);
+         border.setLeft(mypane2);
+         border.setBottom(sxoliotf);
+         border.setTop(title3);
+         window.setScene(new Scene(border, 800, 700));
+         window.show();
+     }
+
     public static void main(String[] args)
        {
          launch(args);
