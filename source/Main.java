@@ -913,6 +913,220 @@ public class Main extends Application
          window.show();
      }
 
+    public void editcart(int x,int y){
+         GridPane mypane = new GridPane();
+         mypane.setPadding(new Insets(10));
+         mypane.setHgap(5);
+         mypane.setVgap(3);
+         mypane.setAlignment(Pos.CENTER);
+         int i = 0;
+         int j = 0;
+         ArrayList<Button> offerButtonArray = new ArrayList<>();
+         ArrayList <Text> array2 = new ArrayList<>();
+         ArrayList<Button> onemoreButton = new ArrayList<>();
+         ArrayList<Button> onelessButton = new ArrayList<>();
+         ArrayList <Text> array5 = new ArrayList<>();
+         ArrayList<Button> array6 = new ArrayList<>();
+         ArrayList<Button> productButtonArray = new ArrayList<>();
+         ArrayList <Text> aarray2 = new ArrayList<>();
+         ArrayList<Button> onemoreofferButton = new ArrayList<>();
+         ArrayList<Button> onelessofferButton = new ArrayList<>();
+         ArrayList <Text> aarray5 = new ArrayList<>();
+         ArrayList<Button> aarray6 = new ArrayList<>();
+         Text text4 = new Text("TOTAL COST="+customers.get(y).getkalathi().getkostos());
+         Text text1 = new Text("ITEM");
+         Text text2 = new Text("№");
+         Text text3 = new Text("PRICE");
+         mypane.add(text1,1, 1);
+         mypane.add(text2,2, 1);
+         mypane.add(text3,5, 1);
+         mypane.add(text4,3,0);
+         Cart kalathi2 = customers.get(y).getkalathi();
+         if(customers.get(y).getkalathi().getoffersincart().size()!=0) {
+             for (i = 0; i < kalathi2.getoffersincart().size(); i++) {
+                 offerButtonArray.add(new Button(kalathi2.getoffersincart().get(i).getoffername()));
+                 mypane.add(offerButtonArray.get(i), 1, i+2);
+                 array2.add(new Text(String.valueOf(kalathi2.getofferquantity().get(i))));
+                 mypane.add(array2.get(i), 2, i+2);
+                 onemoreButton.add(new Button("+"));
+                 mypane.add(onemoreButton.get(i), 3, i+2);
+                 onelessButton.add(new Button("-"));
+                 mypane.add(onelessButton.get(i), 4, i+2);
+                 array5.add(new Text(String.valueOf(kalathi2.getofferprices().get(i))));
+                 mypane.add(array5.get(i), 5, i+2);
+                 array6.add(new Button("DELETE"));
+                 mypane.add(array6.get(i), 6, i+2);
+             }
+             for ( i = 0; i < kalathi2.getoffersincart().size(); i++) {
+                 int finalI = i;
+                 offerButtonArray.get(i).setOnAction(e -> {
+                     Alert alert = new Alert(Alert.AlertType.INFORMATION);
+                     alert.setTitle("BOS");
+                     alert.setHeaderText("Information about offer "+kalathi2.getoffersincart().get(finalI).getoffername());
+                     String t="products in the offer: \n";
+                     for (int k = 0; k < kalathi2.getoffersincart().get(finalI).getproductsinoffer().size(); k++) {
+                         t=t.concat(kalathi2.getoffersincart().get(finalI).getproductsinoffer().get(k).getname()+" times "+customers.get(y).getkalathi().getoffersincart().get(finalI).getquantity().get(k)+" with price: "+customers.get(y).getkalathi().getoffersincart().get(finalI).getproductsinoffer().get(k).gettimh()+"€\n");
+                     }
+                     alert.setContentText("price : "+kalathi2.getoffersincart().get(finalI).getofferprice()+"\n"+t);
+                     alert.showAndWait();
+                 });
+             }
+             for ( i = 0; i < customers.get(y).getkalathi().getoffersincart().size(); i++) {
+                 int final1 = i;
+                 onemoreButton.get(i).setOnAction(e -> {
+                     int temp = kalathi2.getofferquantity().get(final1);
+                     kalathi2.getofferquantity().set(final1, temp + 1);
+                     array2.remove(final1);
+                     array2.add(final1,new Text(String.valueOf(kalathi2.getofferquantity().get(final1))));
+                     array5.remove(final1);
+                     array5.add(final1,new Text(String.valueOf(kalathi2.getofferprices().get(final1)*customers.get(y).getkalathi().getofferquantity().get(final1))));
+                     kalathi2.setkostos(kalathi2.getkostos()+ Integer.parseInt(kalathi2.getoffersincart().get(final1).getofferprice()));
+                     text4.setText("TOTAL COST=" + kalathi2.getkostos() + "€");
+                     customers.get(y).setkalathi(kalathi2);
+                     editcart(x,y);
+                 });
+             }
+             for ( i = 0; i < kalathi2.getoffersincart().size(); i++) {
+                 int final2 = i;
+                 onelessButton.get(i).setOnAction(e -> {
+                     int temp=kalathi2.getofferquantity().get(final2);
+                     kalathi2.getofferquantity().set(final2,temp-1);
+                     array2.remove(final2);
+                     array2.add(final2,new Text(String.valueOf(kalathi2.getofferquantity().get(final2))));
+                     array5.remove(final2);
+                     array5.add(final2,new Text(String.valueOf(kalathi2.getofferprices().get(final2)*kalathi2.getofferquantity().get(final2))));
+                     customers.get(y).getkalathi().setkostos(kalathi2.getkostos()-Integer.parseInt(kalathi2.getoffersincart().get(final2).getofferprice()));
+                     text4.setText("TOTAL COST=" + kalathi2.getkostos() + "€");
+                     if(kalathi2.getofferquantity().get(final2)==0){
+                         kalathi2.setkostos(kalathi2.getkostos()-(Integer.parseInt(kalathi2.getoffersincart().get(final2).getofferprice())*kalathi2.getofferquantity().get(final2)));
+                         kalathi2.getoffersincart().remove(final2);
+                         kalathi2.getofferquantity().remove(final2);
+                         kalathi2.getofferprices().remove(final2);}
+                         customers.get(y).setkalathi(kalathi2);
+                         editcart(x,y);
+                 });
+             }
+             for ( i = 0; i < kalathi2.getoffersincart().size(); i++) {
+                 int final3 = i;
+                 array6.get(i).setOnAction(e -> {
+                     kalathi2.setkostos(kalathi2.getkostos()-(Integer.parseInt(kalathi2.getoffersincart().get(final3).getofferprice())*kalathi2.getofferquantity().get(final3)));
+                     kalathi2.getoffersincart().remove(final3);
+                     kalathi2.getofferquantity().remove(final3);
+                     kalathi2.getofferprices().remove(final3);
+                     customers.get(y).setkalathi(kalathi2);
+                     editcart(x,y);
+                 });
+             }
+         }
+         if(kalathi2.getproductsincart().size()!=0) {
+             for (j = 0; j < kalathi2.getproductsincart().size(); j++) {
+                 productButtonArray.add(new Button(kalathi2.getproductsincart().get(j).getname()));
+                 mypane.add(productButtonArray.get(j), 1, i+j+2);
+                 aarray2.add(new Text(String.valueOf(kalathi2.getquantity().get(j))));
+                 mypane.add(aarray2.get(j), 2, i+j+2);
+                 onemoreofferButton.add(new Button("+"));
+                 mypane.add(onemoreofferButton.get(j), 3, i+j+2);
+                 onelessofferButton.add(new Button("-"));
+                 mypane.add(onelessofferButton.get(j), 4, i+j+2);
+                 aarray5.add(new Text(String.valueOf(kalathi2.getprices().get(j))));
+                 mypane.add(aarray5.get(j), 5, i+j+2);
+                 aarray6.add(new Button("DELETE"));
+                 mypane.add(aarray6.get(j), 6, i+j+2);
+             }
+             for ( j = 0; j < kalathi2.getproductsincart().size(); j++) {
+                 int finalI = j;
+                 productButtonArray.get(j).setOnAction(e -> {
+                     Alert alert = new Alert(Alert.AlertType.INFORMATION);
+                     alert.setTitle("BOS");
+                     alert.setHeaderText("Information about product "+kalathi2.getproductsincart().get(finalI).getname());
+                     alert.setContentText("price : "+kalathi2.getproductsincart().get(finalI).gettimh());
+                     alert.showAndWait();
+                 });
+             }
+             for ( j = 0; j < kalathi2.getproductsincart().size(); j++) {
+                 int final1 = j;
+                 onemoreofferButton.get(j).setOnAction(e -> {
+                     int temp = kalathi2.getquantity().get(final1);
+                     kalathi2.getquantity().set(final1, temp + 1);
+                     aarray2.remove(final1);
+                     aarray2.add(final1,new Text(String.valueOf(kalathi2.getquantity().get(final1))));
+                     aarray5.remove(final1);
+                     aarray5.add(final1,new Text(String.valueOf(kalathi2.getprices().get(final1)*kalathi2.getquantity().get(final1))));
+                     kalathi2.setkostos(kalathi2.getkostos() + Integer.parseInt(kalathi2.getproductsincart().get(final1).gettimh()));
+                     text4.setText("TOTAL COST=" + kalathi2.getkostos() + "€");
+                     customers.get(y).setkalathi(kalathi2);
+                     editcart(x,y);
+                 });
+             }
+             for ( j = 0; j < kalathi2.getproductsincart().size(); j++) {
+                 int final2 = j;
+                 onelessofferButton.get(j).setOnAction(e -> {
+                     int temp=kalathi2.getquantity().get(final2);
+                     kalathi2.getquantity().set(final2,temp-1);
+                     aarray2.remove(final2);
+                     aarray2.add(final2,new Text(String.valueOf(kalathi2.getquantity().get(final2))));
+                     aarray5.remove(final2);
+                     aarray5.add(final2,new Text(String.valueOf(kalathi2.getprices().get(final2)*kalathi2.getquantity().get(final2))));
+                     customers.get(y).getkalathi().setkostos(kalathi2.getkostos()-Integer.parseInt(kalathi2.getproductsincart().get(final2).gettimh()));
+                     text4.setText("TOTAL COST=" + kalathi2.getkostos() + "€");
+                     if(kalathi2.getquantity().get(final2)==0){
+                         kalathi2.setkostos(customers.get(y).getkalathi().getkostos()-(Integer.parseInt(customers.get(y).getkalathi().getproductsincart().get(final2).gettimh())*customers.get(y).getkalathi().getquantity().get(final2)));
+                         kalathi2.getproductsincart().remove(final2);
+                         kalathi2.getquantity().remove(final2);
+                         kalathi2.getprices().remove(final2);}
+                         customers.get(y).setkalathi(kalathi2);
+                         editcart(x,y);
+                 });
+             }
+             for ( j = 0; j < kalathi2.getproductsincart().size(); j++) {
+                 int final3 = j;
+                 aarray6.get(j).setOnAction(e -> {
+                     kalathi2.setkostos(kalathi2.getkostos()-(Integer.parseInt(kalathi2.getproductsincart().get(final3).gettimh())*kalathi2.getquantity().get(final3)));
+                     kalathi2.getproductsincart().remove(final3);
+                     kalathi2.getquantity().remove(final3);
+                     kalathi2.getprices().remove(final3);
+                     customers.get(y).setkalathi(kalathi2);
+                     editcart(x,y);
+                 });
+             }
+         }
+         else
+         {
+             mypane.getChildren().add(new Label("NO PRODUCTS ADDED"));
+         }
+         Button oloklhrwshButton = new Button("READY");
+         mypane.add(oloklhrwshButton, 6, j+i+2);
+         GridPane.setHalignment(oloklhrwshButton, HPos.LEFT);
+         oloklhrwshButton.setOnAction(e -> {
+             if(kalathi2.getkostos()>0) {
+                 customers.get(y).setkalathi(kalathi2);
+                 completeorder(x, y, 0);//x store y customer
+             }
+             else{
+                 Alert alert = new Alert(Alert.AlertType.WARNING);
+                 alert.setTitle("BOS");
+                 alert.setHeaderText(null);
+                 alert.setContentText("You need to add products!");
+                 alert.showAndWait();
+                 customers.get(y).setkalathi(kalathi2);
+                 completeorder(x, y, 0);//x store y customer
+             }
+
+         });
+         Button returnButton = new Button("BACK");
+         mypane.add(returnButton, 0, j+i+2);
+         GridPane.setHalignment(returnButton, HPos.LEFT);
+         returnButton.setOnAction(e -> {
+             for (int h = 0; h < customers.get(y).getkalathi().getproductsincart().size(); h++) {
+                 if(kalathi2.getquantity().get(h)==0){kalathi2.getproductsincart().remove(h);customers.get(y).getkalathi().getquantity().remove(h);}
+             }
+             customers.get(y).setkalathi(kalathi2);
+             sellproducts(x,y,-1,0);
+         });
+         window.setScene(new Scene(mypane, 800, 700));
+         window.show();
+     }
+
     public static void main(String[] args)
        {
          launch(args);
