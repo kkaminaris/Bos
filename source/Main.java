@@ -1198,6 +1198,30 @@ public class Main extends Application
          window.show();
      }
 
+     public void arxikhselidastore(int x){
+         GridPane mypane = new GridPane();
+         mypane.setPadding(new Insets(15));
+         mypane.setHgap(5);
+         mypane.setVgap(5);
+         mypane.setAlignment(Pos.CENTER);
+         Button button = new Button("orders");
+         mypane.add(button, 1, 1);
+         button.setOnAction(e -> {
+             startapp();
+         });
+         Button button1 = new Button("edit stock");
+         mypane.add(button1, 1, 2);
+         button1.setOnAction(e -> editstock(x));
+         Button button2 = new Button("edit account");
+         mypane.add(button2, 1, 3);
+         button2.setOnAction(e -> editstore(x));
+         Button button3 = new Button("log out");
+         mypane.add(button3, 1, 4);
+         button3.setOnAction(e -> startapp());
+         window.setScene(new Scene(mypane, 800, 700));
+         window.show();
+     }
+
     public static void main(String[] args)
        {
          launch(args);
