@@ -1181,4 +1181,271 @@ public class Main extends Application
          }
      }
 
+     public void addoffer(int x,Offer temp,int ctgr){//x to store
+         VBox mypane = new VBox();
+         mypane.setPadding(new Insets(10));
+         mypane.setSpacing(8);
+         mypane.setAlignment(Pos.CENTER);
+         ScrollPane scrollPane = new ScrollPane(mypane);
+         scrollPane.setFitToHeight(true);
+         BorderPane border = new BorderPane(scrollPane);
+         Text title = new Text("CATEGORIES");
+         title.setFont(Font.font("Arial", FontWeight.BOLD, 14));
+         mypane.getChildren().add(title);
+         if(stores.get(x).getcategories().size()==0){mypane.getChildren().add(new Label("NO CATEGORIES ADDED"));}
+         else
+         {
+             Button[] array2 = new Button[stores.get(x).getcategories().size()];
+             for (int i = 0; i < stores.get(x).getcategories().size(); i++)
+             {
+                 array2[i] = new Button(stores.get(x).getcategories().get(i));
+                 mypane.getChildren().add(array2[i]);
+             }
+             for (int i = 0; i < stores.get(x).getcategories().size(); i++) {
+                 int finalI = i;
+                 array2[i].setOnAction(e -> addoffer(x,temp, finalI));
+             }
+         }
+         VBox mypane2 = new VBox();
+         mypane2.setPadding(new Insets(10));
+         mypane2.setSpacing(8);
+         mypane2.setAlignment(Pos.CENTER);
+         Text title2 = new Text("PRODUCTS");
+         title2.setFont(Font.font("Arial", FontWeight.BOLD, 14));
+         mypane2.getChildren().add(title2);
+         if(ctgr==-1) {
+             Button[] array = new Button[stores.get(x).getproducts().size()];
+             if (stores.get(x).getproducts().size() == 0) {
+                 mypane2.getChildren().add(new Label("NO PRODUCTS ADDED"));
+             } else {
+                 for (int i = 0; i < stores.get(x).getproducts().size(); i++) {
+                     array[i] = new Button(stores.get(x).getproducts().get(i).getname() + "   " + stores.get(x).getproducts().get(i).gettimh() + "€");
+                     mypane2.getChildren().add(array[i]);
+                 }
+             }
+             for (int i = 0; i < stores.get(x).getproducts().size(); i++) {
+                 int finalI = i;
+                 array[i].setOnAction(e -> {
+                     TextInputDialog dialog = new TextInputDialog("1");
+                     dialog.setTitle("BOS");
+                     dialog.setHeaderText("You are adding " + stores.get(x).getproducts().get(finalI).getname() + " to the offer");
+                     dialog.setContentText("how many do you want to add:");
+                     Optional<String> result = dialog.showAndWait();
+                     if (result.isPresent()) {
+                         ArrayList<Product> productsinoffer2;
+                         ArrayList<Integer> quantity2;
+                         ArrayList<Integer> prices2;
+                         productsinoffer2 = temp.getproductsinoffer();
+                         productsinoffer2.add(stores.get(x).getproducts().get(finalI));
+                         temp.setproductsinoffer(productsinoffer2);
+                         quantity2 = temp.getquantity();
+                         quantity2.add(Integer.parseInt(result.get()));
+                         temp.setquantity(quantity2);
+                         prices2 = temp.getprices();
+                         prices2.add(Integer.parseInt(stores.get(x).getproducts().get(finalI).gettimh()));
+                         temp.setprices(prices2);
+                         temp.setoldprice(temp.getoldprice() + (Integer.parseInt(result.get()) * Integer.parseInt(stores.get(x).getproducts().get(finalI).gettimh())));
+                     }
+                 });
+             }
+         }
+         else
+         {
+             Button[] array = new Button[stores.get(x).getproducts().size()+1];
+             if (stores.get(x).getproducts().size() == 0) {
+                 mypane2.getChildren().add(new Label("NO PRODUCTS ADDED"));
+             }
+             else{
+                 for (int i = 0; i < stores.get(x).getproducts().size(); i++) {
+                     if(stores.get(x).getprosekat().get(i)==ctgr) {
+                         array[i] = new Button(stores.get(x).getproducts().get(i).getname() + "   " + stores.get(x).getproducts().get(i).gettimh() + "€");
+                         mypane2.getChildren().add(array[i]);
+                     }
+                 }
+                 array[stores.get(x).getproducts().size()] = new Button("all categories");
+                 mypane2.getChildren().add(array[stores.get(x).getproducts().size()]);
+             }
+             for (int i = 0; i < stores.get(x).getproducts().size(); i++)
+             { int finalI = i;
+                 if(stores.get(x).getprosekat().get(i)==ctgr)
+                 {
+                     array[i].setOnAction(e -> {
+                         TextInputDialog dialog = new TextInputDialog("1");
+                         dialog.setTitle("BOS");
+                         dialog.setHeaderText("You are adding "+stores.get(x).getproducts().get(finalI).getname()+" to the offer");
+                         dialog.setContentText("how many do you want to add:");
+                         Optional<String> result = dialog.showAndWait();
+                         if (result.isPresent()){
+                             ArrayList<Product> productsinoffer2;
+                             ArrayList<Integer> quantity2;
+                             ArrayList<Integer> prices2;
+                             productsinoffer2=temp.getproductsinoffer();
+                             productsinoffer2.add(stores.get(x).getproducts().get(finalI));
+                             temp.setproductsinoffer(productsinoffer2);
+                             quantity2=temp.getquantity();
+                             quantity2.add(Integer.parseInt(result.get()));
+                             temp.setquantity(quantity2);
+                             prices2=temp.getprices();
+                             prices2.add(Integer.parseInt(stores.get(x).getproducts().get(finalI).gettimh()));
+                             temp.setprices(prices2);
+                             temp.setoldprice(temp.getoldprice() +( Integer.parseInt(result.get()) * Integer.parseInt(stores.get(x).getproducts().get(finalI).gettimh())));
+                         }
+                     });
+                 }
+             }
+             array[stores.get(x).getproducts().size()].setOnAction(e->addoffer(x,temp,-1));
+         }
+         VBox mypane4 = new VBox();
+         mypane4.setPadding(new Insets(10));
+         mypane4.setSpacing(8);
+         mypane4.setAlignment(Pos.BOTTOM_RIGHT);
+         Button aButton3 = new Button("BACK");
+         mypane4.getChildren().add(aButton3);
+         aButton3.setOnAction(e -> editstock(x));
+         Button bButton3 = new Button("READY");
+         mypane4.getChildren().add(bButton3);
+         bButton3.setOnAction(e -> {
+             TextInputDialog dialog = new TextInputDialog(null);
+             dialog.setTitle("BOS");
+             dialog.setHeaderText(null);
+             dialog.setContentText("Please enter your offers name:");
+             Optional<String> result = dialog.showAndWait();
+             result.ifPresent(s -> temp.setoffername (s));
+             do {
+                 TextInputDialog dialog2 = new TextInputDialog(null);
+                 dialog2.setTitle("BOS");
+                 dialog2.setHeaderText(null);
+                 dialog2.setContentText("Please enter your offers price:");
+                 Optional<String> result2 = dialog2.showAndWait();
+                 if (result2.isPresent()) {
+                     temp.setofferprice(result2.get());
+                     if(Integer.parseInt(result2.get())>=temp.getoldprice()){
+                         Alert alert = new Alert(Alert.AlertType.ERROR);
+                         alert.setTitle("BOS");
+                         alert.setHeaderText(null);
+                         alert.setContentText("Offer price must be lower than "+temp.getoldprice());
+                         alert.showAndWait();
+                     }
+                 }
+             }while(Integer.parseInt(temp.getofferprice())>=temp.getoldprice());
+             stores.get(x).getoffers().add(temp);
+             editstock(x);
+         });
+         GridPane mypane5 = new GridPane();
+         mypane5.setPadding(new Insets(15));
+         mypane5.setHgap(5);
+         mypane5.setVgap(5);
+         mypane5.setAlignment(Pos.TOP_RIGHT);
+         border.setLeft(mypane);
+         border.setCenter(mypane2);
+         border.setBottom(mypane4);
+         Text title3 = new Text("BOS");
+         title3.setFill(Color.GREEN);
+         title3.setFont(Font.font ("Verdana", 20));
+         Text title4 = new Text(stores.get(x).getname());
+         title4.setFont(Font.font ("Verdana", 20));
+         HBox mypane3 = new HBox();
+         mypane3.setPadding(new Insets(10));
+         mypane3.setSpacing(38);
+         mypane3.setAlignment(Pos.CENTER);
+         mypane3.getChildren().add(title3);
+         mypane3.getChildren().add(title4);
+         border.setRight(mypane5);
+         border.setTop(mypane3);
+         window.setScene(new Scene(border, 800, 700));
+         window.show();
+     }
+
+     public void addcategory(int x){
+         GridPane mypane = new GridPane();
+         mypane.setPadding(new Insets(15));
+         mypane.setHgap(5);
+         mypane.setVgap(5);
+         mypane.add(new Label("CATEGORY NAME:"), 0, 1);
+         TextField catname = new TextField();
+         mypane.add(catname, 1, 1);
+         Button Button2 = new Button("ADD CATEGORY");
+         mypane.add(Button2, 1, 3);
+         GridPane.setHalignment(Button2, HPos.LEFT);
+         Button2.setOnAction(e -> {
+             ArrayList<String> categories2;
+             categories2=stores.get(x).getcategories();
+             categories2.add(catname.getText());
+             stores.get(x).setcategories(categories2);
+             Filters temp = new Filters(catname.getText());
+             ArrayList<Filters> filt2;
+             filt2=stores.get(x).getfilt();
+             filt2.add(temp);
+             stores.get(x).setfilt(filt2);
+             catname.setText("");
+         });
+         Button Button1 = new Button("BACK");
+         mypane.add(Button1, 1, 5);
+         GridPane.setHalignment(Button1, HPos.LEFT);
+         Button1.setOnAction(e -> editstock(x));
+         window.setScene(new Scene(mypane, 800, 700));
+         window.show();
+     }
+
+     public void addproduct(int x){
+         GridPane mypane = new GridPane();
+         mypane.setPadding(new Insets(15));
+         mypane.setHgap(5);
+         mypane.setVgap(5);
+         mypane.add(new Label("PRODUCT NAME:"), 0, 1);
+         TextField proname = new TextField();
+         mypane.add(proname, 1, 1);
+         mypane.add(new Label("PRODUCT CODE:"), 0, 2);
+         TextField procode = new TextField();
+         mypane.add(procode, 1, 2);
+         mypane.add(new Label("PRODUCT PRICE:"), 0, 3);
+         TextField proprice = new TextField();
+         mypane.add(proprice, 1, 3);
+         Button Button2 = new Button("ADD PRODUCT");
+         mypane.add(Button2, 1, 4);
+         GridPane.setHalignment(Button2, HPos.LEFT);
+         List<String> choices = new ArrayList<>(stores.get(x).getcategories());
+         ChoiceDialog<String> dialog = new ChoiceDialog<>("no category", choices);
+         dialog.setTitle("BOS");
+         dialog.setHeaderText("your product is almost added!");
+         dialog.setContentText("Choose your product's category :");
+         Optional<String> result = dialog.showAndWait();
+         if (result.isPresent()){
+             if(result.get().equals("no category")){
+                 ArrayList<Integer> prosekat2;
+                 prosekat2=stores.get(x).getprosekat();
+                 prosekat2.add(-1);
+                 stores.get(x).setprosekat(prosekat2);
+             }
+             else{
+                 for (int i = 0; i < stores.get(x).getcategories().size() ; i++) {
+                     if(stores.get(x).getcategories().get(i).equals(result.get())) {
+                         ArrayList<Integer> prosekat2;
+                         prosekat2=stores.get(x).getprosekat();
+                         prosekat2.add(i);
+                         stores.get(x).setprosekat(prosekat2);
+                     }
+                 }
+             }
+         }
+         else{ArrayList<Integer> prosekat2;
+             prosekat2=stores.get(x).getprosekat();
+             prosekat2.add(-1);
+             stores.get(x).setprosekat(prosekat2);}
+         Button2.setOnAction(e -> {
+             Product temp2 = new Product(proprice.getText(),procode.getText(),proname.getText());
+             ArrayList<Product> products2;
+             products2=stores.get(x).getproducts();
+             products2.add(temp2);
+             stores.get(x).setproducts(products2);
+             editstock(x);
+         });
+         Button Button1 = new Button("BACK");
+         mypane.add(Button1, 1, 5);
+         GridPane.setHalignment(Button1, HPos.LEFT);
+         Button1.setOnAction(e -> editstock(x));
+         window.setScene(new Scene(mypane, 800, 700));
+         window.show();
+     }
+
  }
