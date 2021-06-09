@@ -1448,4 +1448,138 @@ public class Main extends Application
          window.show();
      }
 
+   public void addtocart(int x,int y,String z,int w) {////x to store y o customer ,quantity,proion
+         ArrayList<Product> productsincart2 = customers.get(y).getkalathi().getproductsincart();
+         productsincart2.add(stores.get(x).getproducts().get(w));
+         customers.get(y).getkalathi().setproductsincart(productsincart2);
+         ArrayList<Integer> quantity2 =customers.get(y).getkalathi().getquantity();
+         quantity2.add(Integer.parseInt(z));
+         customers.get(y).getkalathi().setquantity(quantity2);
+         ArrayList<Integer> prices2 =customers.get(y).getkalathi().getprices();
+         prices2.add(Integer.parseInt(stores.get(x).getproducts().get(w).gettimh()));
+         customers.get(y).getkalathi().setprices(prices2);
+         customers.get(y).getkalathi().setkostos(customers.get(y).getkalathi().getkostos()+(Integer.parseInt(stores.get(x).getproducts().get(w).gettimh())*Integer.parseInt(z)));
+     }
+
+   public void addoffertocart(int x,int y,String z,int w) {////x to store y o customer ,quantity,offer
+         ArrayList<Offer> offersincart2 = customers.get(y).getkalathi().getoffersincart();
+         offersincart2.add(stores.get(x).getoffers().get(w));
+         customers.get(y).getkalathi().setoffersincart(offersincart2);
+         ArrayList<Integer> offerquantity2 = customers.get(y).getkalathi().getofferquantity();
+         offerquantity2.add(Integer.parseInt(z));
+         customers.get(y).getkalathi().setofferquantity(offerquantity2);
+         ArrayList<Integer> offerprices2 = customers.get(y).getkalathi().getofferprices();
+         offerprices2.add(Integer.parseInt(stores.get(x).getoffers().get(w).getofferprice()));
+         customers.get(y).getkalathi().setofferprices(offerprices2);
+         customers.get(y).getkalathi().setkostos(customers.get(y).getkalathi().getkostos()+(Integer.parseInt(stores.get(x).getoffers().get(w).getofferprice())*Integer.parseInt(z)));
+     }
+
+ public void editcustomer(int y){
+         GridPane mypane = new GridPane();
+         mypane.setPadding(new Insets(10));
+         mypane.setHgap(5);
+         mypane.setVgap(3);
+         mypane.setAlignment(Pos.CENTER);
+         TextField nametf = new TextField();
+         nametf.setPromptText(customers.get(y).getname());
+         TextField phonetf = new TextField();
+         phonetf.setPromptText(customers.get(y).getphone_number());
+         TextField emailtf = new TextField();
+         emailtf.setPromptText(customers.get(y).getemail());
+         TextField passwordtf = new TextField();
+         passwordtf.setPromptText(customers.get(y).getpassword());
+         mypane.add(nametf, 1, 1);
+         mypane.add(phonetf, 1, 2);
+         mypane.add(emailtf, 1, 3);
+         mypane.add(passwordtf, 1, 4);
+         mypane.add(new Label("NAME:"), 0, 1);
+         mypane.add(new Label("PHONE:"), 0, 2);
+         mypane.add(new Label("EMAIL:"), 0, 3);
+         mypane.add(new Label("PASSWORD:"), 0, 4);
+         Button aButton = new Button("READY");
+         mypane.add(aButton, 1, 5);
+         GridPane.setHalignment(aButton, HPos.LEFT);
+         aButton.setOnAction(e -> anazhthshkatasthmatos(y,-1,null));
+         Button bButton = new Button("BACK");
+         mypane.add(bButton, 0, 5);
+         GridPane.setHalignment(bButton, HPos.LEFT);
+         bButton.setOnAction(e -> anazhthshkatasthmatos(y,-1,null));
+         Button cButton = new Button("EDIT");
+         mypane.add(cButton, 3, 1);
+         GridPane.setHalignment(cButton, HPos.LEFT);
+         cButton.setOnAction(e -> customers.get(y).setname(nametf.getText()));
+         Button eButton = new Button("EDIT");
+         mypane.add(eButton, 3, 4);
+         GridPane.setHalignment(eButton, HPos.LEFT);
+         eButton.setOnAction(e -> customers.get(y).setpassword(passwordtf.getText()));
+         Button fButton = new Button("EDIT");
+         mypane.add(fButton, 3, 2);
+         GridPane.setHalignment(fButton, HPos.LEFT);
+         fButton.setOnAction(e -> customers.get(y).setphone_number(phonetf.getText()));
+         Button gButton = new Button("EDIT");
+         mypane.add(gButton, 3, 3);
+         GridPane.setHalignment(gButton, HPos.LEFT);
+         gButton.setOnAction(e -> customers.get(y).setemail(emailtf.getText()));
+         window.setScene(new Scene(mypane, 800, 700));
+         window.show();
+     }
+
+   public void editstore(int x){
+         GridPane mypane = new GridPane();
+         mypane.setPadding(new Insets(10));
+         mypane.setHgap(5);
+         mypane.setVgap(3);
+         mypane.setAlignment(Pos.CENTER);
+         TextField nametf = new TextField();
+         nametf.setPromptText(stores.get(x).getname());
+         TextField phonetf = new TextField();
+         phonetf.setPromptText(stores.get(x).getphone_number());
+         TextField emailtf = new TextField();
+         emailtf.setPromptText(stores.get(x).getemail());
+         TextField passwordtf = new TextField();
+         passwordtf.setPromptText(stores.get(x).getpassword());
+         TextField afmtf = new TextField();
+         afmtf.setPromptText(stores.get(x).getafm() );
+         mypane.add(nametf, 1, 1);
+         mypane.add(phonetf, 1, 2);
+         mypane.add(emailtf, 1, 3);
+         mypane.add(passwordtf, 1, 4);
+         mypane.add(afmtf, 1, 5);
+         mypane.add(new Label("NAME:"), 0, 1);
+         mypane.add(new Label("PHONE:"), 0, 2);
+         mypane.add(new Label("EMAIL:"), 0, 3);
+         mypane.add(new Label("PASSWORD:"), 0, 4);
+         mypane.add(new Label("AFM:"), 0, 5);
+         Button aButton = new Button("READY");
+         mypane.add(aButton, 1, 6);
+         GridPane.setHalignment(aButton, HPos.LEFT);
+         aButton.setOnAction(e -> arxikhselidastore(x));
+         Button bButton = new Button("BACK");
+         mypane.add(bButton, 0, 6);
+         GridPane.setHalignment(bButton, HPos.LEFT);
+         bButton.setOnAction(e -> arxikhselidastore(x));
+         Button cButton = new Button("EDIT");
+         mypane.add(cButton, 3, 1);
+         GridPane.setHalignment(cButton, HPos.LEFT);
+         cButton.setOnAction(e -> stores.get(x).setname(nametf.getText()));
+         Button eButton = new Button("EDIT");
+         mypane.add(eButton, 3, 4);
+         GridPane.setHalignment(eButton, HPos.LEFT);
+         eButton.setOnAction(e -> stores.get(x).setpassword(passwordtf.getText()));
+         Button fButton = new Button("EDIT");
+         mypane.add(fButton, 3, 2);
+         GridPane.setHalignment(fButton, HPos.LEFT);
+         fButton.setOnAction(e -> stores.get(x).setphone_number(phonetf.getText()));
+         Button gButton = new Button("EDIT");
+         mypane.add(gButton, 3, 3);
+         GridPane.setHalignment(gButton, HPos.LEFT);
+         gButton.setOnAction(e -> stores.get(x).setemail(emailtf.getText()));
+         Button hButton = new Button("EDIT");
+         mypane.add(hButton, 3, 5);
+         GridPane.setHalignment(gButton, HPos.LEFT);
+         hButton.setOnAction(e -> stores.get(x).setafm(afmtf.getText()));
+         window.setScene(new Scene(mypane, 800, 700));
+         window.show();
+     }
+
  }
