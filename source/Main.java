@@ -1152,4 +1152,33 @@ public class Main extends Application
          launch(args);
        }
 
+     class Sortbytimhauksousa implements Comparator<Product> {
+         public int compare(Product a, Product b)
+         {
+             return Integer.parseInt( a.gettimh())-Integer.parseInt(b.gettimh());
+         }
+     }
+     class Sortbytimhfthinousa implements Comparator<Product> {
+         public int compare(Product a, Product b)
+         {
+             return -(Integer.parseInt( a.gettimh())-Integer.parseInt(b.gettimh()));
+         }
+     }
+     class Sortbynameauksousa implements Comparator<Product> {
+         public int compare(Product a, Product b)
+         {
+             int x;
+             x=a.getname().compareTo(b.getname());
+             return x;
+         }
+    }
+     class Sortbynameftinousa implements Comparator<Product> {
+         public int compare(Product a, Product b)
+         {
+             int x;
+             x=a.getname().compareTo(b.getname());
+             return -x;
+         }
+     }
+
  }
